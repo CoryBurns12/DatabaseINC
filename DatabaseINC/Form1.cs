@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using MySql;
 using MySql.Data.MySqlClient;
 
@@ -163,6 +164,7 @@ namespace DatabaseINC
                 CDBbackbutton.Visible = false;
                 createdatabase.Visible = false;
                 _DATABASE.Visible = false;
+                CreateTable.Visible = true;
             };
 
             this.Controls.Add(_DATABASE);
@@ -172,6 +174,7 @@ namespace DatabaseINC
 
         private void CreateTable_Click(object sender, EventArgs e)
         {
+
             while(mainconnection == null)
             {
                 MessageBox.Show("Connection has not been established. Connect to MYSQL using your login information first.");
@@ -179,14 +182,6 @@ namespace DatabaseINC
             }
 
             HideButtons();
-            TextBox _TABLE = new()
-            {
-                PlaceholderText = "Table Name",
-                Location = new(271, 45),
-                Width = 200,
-                ForeColor = Color.Red
-            };
-
             TextBox _DBNAME = new()
             {
                 PlaceholderText = "Database Name",
@@ -194,6 +189,37 @@ namespace DatabaseINC
                 Width = 200,
                 ForeColor = Color.Red
             };
+
+            TextBox _TABLENAME = new()
+            {
+                PlaceholderText = "Table",
+                Location = new(271, 45),
+                Width = 43,
+                ForeColor = Color.Red
+            };
+
+            TextBox _VARNAME = new()
+            {
+                PlaceholderText = "Variable Name",
+                Location = new(324, 45),
+                Width = 86,
+                ForeColor = Color.Red
+            };
+
+            ComboBox _VARTYPE = new()
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Location = new(420, 45),
+                Width = 50,
+                Height = 50,
+                MaxLength = 50
+            };
+
+            ClutterVars.ArraySort();
+            foreach (string type in ClutterVars._DATATYPES)
+            {
+                _VARTYPE.Items.Add(type);
+            }
 
             Button CTBackbutton = new()
             {
@@ -209,7 +235,10 @@ namespace DatabaseINC
                 Width = 100
             };
 
-            this.Controls.Add(_TABLE);
+            this.Controls.Add(_DBNAME);
+            this.Controls.Add(_TABLENAME);
+            this.Controls.Add(_VARNAME);
+            this.Controls.Add(_VARTYPE);
             this.Controls.Add(CTBackbutton);
             this.Controls.Add(createtable);
         }
