@@ -32,6 +32,8 @@
             CreateDatabase = new Button();
             CreateTable = new Button();
             Disconnect = new Button();
+            NextPage = new Button();
+            PreviousPage = new Button();
             SuspendLayout();
             // 
             // Connect
@@ -74,11 +76,33 @@
             Disconnect.UseVisualStyleBackColor = true;
             Disconnect.Click += Disconnect_Click;
             // 
+            // NextPage
+            // 
+            NextPage.Location = new Point(402, 275);
+            NextPage.Name = "NextPage";
+            NextPage.Size = new Size(99, 40);
+            NextPage.TabIndex = 4;
+            NextPage.Text = "Next Page";
+            NextPage.UseVisualStyleBackColor = true;
+            NextPage.Click += NextPage_Click;
+            // 
+            // PreviousPage
+            // 
+            PreviousPage.Location = new Point(301, 275);
+            PreviousPage.Name = "PreviousPage";
+            PreviousPage.Size = new Size(99, 40);
+            PreviousPage.TabIndex = 5;
+            PreviousPage.Text = "Previous Page";
+            PreviousPage.UseVisualStyleBackColor = true;
+            PreviousPage.Click += PreviousPage_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(PreviousPage);
+            Controls.Add(NextPage);
             Controls.Add(Disconnect);
             Controls.Add(CreateTable);
             Controls.Add(CreateDatabase);
@@ -94,5 +118,7 @@
         private Button CreateDatabase;
         private Button CreateTable;
         private Button Disconnect;
+        private Button NextPage;
+        private Button PreviousPage;
     }
 }

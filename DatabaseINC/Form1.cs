@@ -13,10 +13,24 @@ namespace DatabaseINC
         {
             InitializeComponent();
             Disconnect.Visible = false;
+
+           /* if (mainconnection == null || mainconnection.State == ConnectionState.Closed)
+            {
+                NextPage.Location = new(402, 218);
+                PreviousPage.Location = new(301, 218);
+            }
+            else if(mainconnection != null)
+            {
+                NextPage.Location = new(402, 275);
+                PreviousPage.Location = new(301, 275);
+            }
+           */
         }
 
         private void Connect_Click(object sender, EventArgs e)
         {
+            NextPage.Visible = false;
+            PreviousPage.Visible = false;
             HideButtons();
             TextBox _SERVER = new()
             {
@@ -90,8 +104,14 @@ namespace DatabaseINC
                 connectMYSQL.Visible = false;
                 CreateDatabase.Visible = true;
                 CreateTable.Visible = true;
+                NextPage.Visible = true;
+                PreviousPage.Visible = true;
 
-                if(mainconnection != null || mainconnection.State != ConnectionState.Closed)
+                if (mainconnection == null || mainconnection.State == ConnectionState.Closed)
+                {
+                    Disconnect.Visible = false;
+                }
+                else if(mainconnection != null || mainconnection.State != ConnectionState.Closed)
                 {
                     Disconnect.Visible = true;
                 }
@@ -111,8 +131,33 @@ namespace DatabaseINC
             CreateTable.Visible = false;
         }
 
+        private void HideButtonsOnPageShift()
+        {
+            // Page 1
+            Connect.Visible = false;
+            CreateDatabase.Visible = false;
+            CreateTable.Visible = false;
+            Disconnect.Visible = false;
+
+            // Page 2
+        }
+
+        private void ShowButtonsOnPreviousPage()
+        {
+            Connect.Visible = true;
+            CreateDatabase.Visible = true;
+            CreateTable.Visible = true;
+
+            if (mainconnection == null || mainconnection.State == ConnectionState.Closed)
+            {
+                Disconnect.Visible = false;
+            }
+        }
+
         private void CreateDatabase_Click(object sender, EventArgs e)
         {
+            NextPage.Visible = false;
+            PreviousPage.Visible = false;
             Disconnect.Visible = false;
             // Checks if connection is null (which it always will be on first run)
             while (mainconnection == null || mainconnection.State == ConnectionState.Closed)
@@ -174,6 +219,9 @@ namespace DatabaseINC
                 _DATABASE.Visible = false;
                 CreateTable.Visible = true;
 
+                NextPage.Visible = true;
+                PreviousPage.Visible = true;
+
                 if (mainconnection != null || mainconnection.State != ConnectionState.Closed)
                 {
                     Disconnect.Visible = true;
@@ -187,7 +235,8 @@ namespace DatabaseINC
 
         private void CreateTable_Click(object sender, EventArgs e)
         {
-
+            NextPage.Visible = false;
+            PreviousPage.Visible = false;
             Disconnect.Visible = false;
             while (mainconnection == null || mainconnection.State == ConnectionState.Closed)
             {
@@ -259,6 +308,8 @@ namespace DatabaseINC
 
         private void Disconnect_Click(object sender, EventArgs e)
         {
+            NextPage.Visible = false;
+            PreviousPage.Visible = false;
             try
             {
                 mainconnection.Close();
@@ -270,6 +321,18 @@ namespace DatabaseINC
             {
                 MessageBox.Show($"Connection cannot be closed. {ex.Message}");
             }
+        }
+
+        private void NextPage_Click(object sender, EventArgs e)
+        {
+            HideButtonsOnPageShift();
+            NextPage.Visible = false;
+        }
+
+        private void PreviousPage_Click(object sender, EventArgs e)
+        {
+            ShowButtonsOnPreviousPage();
+            NextPage.Visible = true;
         }
     }
 }
