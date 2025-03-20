@@ -1,6 +1,7 @@
 using Microsoft.VisualBasic;
 using MySql;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace DatabaseINC
 {
@@ -11,6 +12,7 @@ namespace DatabaseINC
         public Form1()
         {
             InitializeComponent();
+            Disconnect.Visible = false;
         }
 
         private void Connect_Click(object sender, EventArgs e)
@@ -88,6 +90,11 @@ namespace DatabaseINC
                 connectMYSQL.Visible = false;
                 CreateDatabase.Visible = true;
                 CreateTable.Visible = true;
+
+                if(mainconnection != null || mainconnection.State != ConnectionState.Closed)
+                {
+                    Disconnect.Visible = true;
+                }
             };
 
             this.Controls.Add(_SERVER);
@@ -106,8 +113,9 @@ namespace DatabaseINC
 
         private void CreateDatabase_Click(object sender, EventArgs e)
         {
+            Disconnect.Visible = false;
             // Checks if connection is null (which it always will be on first run)
-            while (mainconnection == null)
+            while (mainconnection == null || mainconnection.State == ConnectionState.Closed)
             {
                 MessageBox.Show("Connection has not been established. Connect to MYSQL using your login information first.");
                 return;
@@ -165,6 +173,11 @@ namespace DatabaseINC
                 createdatabase.Visible = false;
                 _DATABASE.Visible = false;
                 CreateTable.Visible = true;
+
+                if (mainconnection != null || mainconnection.State != ConnectionState.Closed)
+                {
+                    Disconnect.Visible = true;
+                }
             };
 
             this.Controls.Add(_DATABASE);
@@ -175,7 +188,8 @@ namespace DatabaseINC
         private void CreateTable_Click(object sender, EventArgs e)
         {
 
-            while(mainconnection == null)
+            Disconnect.Visible = false;
+            while (mainconnection == null || mainconnection.State == ConnectionState.Closed)
             {
                 MessageBox.Show("Connection has not been established. Connect to MYSQL using your login information first.");
                 return;
@@ -241,6 +255,21 @@ namespace DatabaseINC
             this.Controls.Add(_VARTYPE);
             this.Controls.Add(CTBackbutton);
             this.Controls.Add(createtable);
+        }
+
+        private void Disconnect_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                mainconnection.Close();
+                MessageBox.Show("Connection closed");
+                mainconnection.Close();
+                Disconnect.Visible = false;
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Connection cannot be closed. {ex.Message}");
+            }
         }
     }
 }

@@ -31,6 +31,7 @@
             Connect = new Button();
             CreateDatabase = new Button();
             CreateTable = new Button();
+            Disconnect = new Button();
             SuspendLayout();
             // 
             // Connect
@@ -63,11 +64,22 @@
             CreateTable.UseVisualStyleBackColor = true;
             CreateTable.Click += CreateTable_Click;
             // 
+            // Disconnect
+            // 
+            Disconnect.Location = new Point(301, 218);
+            Disconnect.Name = "Disconnect";
+            Disconnect.Size = new Size(200, 40);
+            Disconnect.TabIndex = 3;
+            Disconnect.Text = "Disconnect";
+            Disconnect.UseVisualStyleBackColor = true;
+            Disconnect.Click += Disconnect_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(Disconnect);
             Controls.Add(CreateTable);
             Controls.Add(CreateDatabase);
             Controls.Add(Connect);
@@ -81,5 +93,6 @@
         private Button Connect;
         private Button CreateDatabase;
         private Button CreateTable;
+        private Button Disconnect;
     }
 }
