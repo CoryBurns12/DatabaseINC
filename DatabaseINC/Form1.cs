@@ -13,18 +13,6 @@ namespace DatabaseINC
         {
             InitializeComponent();
             Disconnect.Visible = false;
-
-           /* if (mainconnection == null || mainconnection.State == ConnectionState.Closed)
-            {
-                NextPage.Location = new(402, 218);
-                PreviousPage.Location = new(301, 218);
-            }
-            else if(mainconnection != null)
-            {
-                NextPage.Location = new(402, 275);
-                PreviousPage.Location = new(301, 275);
-            }
-           */
         }
 
         private void Connect_Click(object sender, EventArgs e)
@@ -162,6 +150,8 @@ namespace DatabaseINC
             // Checks if connection is null (which it always will be on first run)
             while (mainconnection == null || mainconnection.State == ConnectionState.Closed)
             {
+                NextPage.Visible = true;
+                PreviousPage.Visible = true;
                 MessageBox.Show("Connection has not been established. Connect to MYSQL using your login information first.");
                 return;
             }
@@ -238,8 +228,12 @@ namespace DatabaseINC
             NextPage.Visible = false;
             PreviousPage.Visible = false;
             Disconnect.Visible = false;
+            int click = 0;
             while (mainconnection == null || mainconnection.State == ConnectionState.Closed)
             {
+                NextPage.Visible = true;
+                PreviousPage.Visible = true;
+                PreviousPage.Visible = true;
                 MessageBox.Show("Connection has not been established. Connect to MYSQL using your login information first.");
                 return;
             }
@@ -250,6 +244,14 @@ namespace DatabaseINC
                 PlaceholderText = "Database Name",
                 Location = new(271, 91),
                 Width = 200,
+                ForeColor = Color.Red
+            };
+
+            TextBox generatedtextbox = new()
+            {
+                PlaceholderText = "Amount of tables",
+                Location = new(480, 45),
+                Width = 86,
                 ForeColor = Color.Red
             };
 
@@ -298,10 +300,79 @@ namespace DatabaseINC
                 Width = 100
             };
 
+            Button usedatabase = new()
+            {
+                Text = "Use Database",
+                Location = new(301, 46),
+                Size = new(200, 40),
+                Font = new Font("Segoe UI", 9)
+            };
+
+            
+            CTBackbutton.Click += (sender, e) =>
+            {
+                Connect.Visible = true;
+                CreateDatabase.Visible = true;
+                CreateTable.Visible = true;
+                Disconnect.Visible = false;
+                _DBNAME.Visible = false;
+                _TABLENAME.Visible = false;
+                _VARNAME.Visible = false;
+                _VARTYPE.Visible = false;
+                CTBackbutton.Visible = false;
+                createtable.Visible = false;
+                generatedtextbox.Visible = false;
+
+                NextPage.Visible = true;
+                PreviousPage.Visible = true;
+
+                if (mainconnection != null || mainconnection.State != ConnectionState.Closed)
+                {
+                    Disconnect.Visible = true;
+                }
+            };
+
+            usedatabase.Click += (sender, e) =>
+            {
+                int formcount = 0;
+
+                Form InputBox = new Form()
+                {
+                    Text = "Use Database",
+                    Width = 300,
+                    Height = 180,
+                    StartPosition = FormStartPosition.CenterParent,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    MaximizeBox = false,
+                    MinimizeBox = false
+                };
+
+                /*
+                while (formcount < 1)
+                {
+                    if (formcount < 1)
+                    {
+                        InputBox.Show();
+                    }
+                    else if (formcount > 1)
+                    {
+                        InputBox.Close();
+                    }
+
+                    formcount++;
+                }
+
+                formcount--;
+                */
+            };
+
+            /*
             this.Controls.Add(_DBNAME);
             this.Controls.Add(_TABLENAME);
             this.Controls.Add(_VARNAME);
             this.Controls.Add(_VARTYPE);
+            */
+            this.Controls.Add(usedatabase);
             this.Controls.Add(CTBackbutton);
             this.Controls.Add(createtable);
         }
@@ -313,6 +384,8 @@ namespace DatabaseINC
             try
             {
                 mainconnection.Close();
+                NextPage.Visible = true;
+                PreviousPage.Visible = true;
                 MessageBox.Show("Connection closed");
                 mainconnection.Close();
                 Disconnect.Visible = false;
@@ -333,6 +406,15 @@ namespace DatabaseINC
         {
             ShowButtonsOnPreviousPage();
             NextPage.Visible = true;
+
+            if (mainconnection == null || mainconnection.State == ConnectionState.Closed)
+            {
+                Disconnect.Visible = false;
+            }
+            else if(mainconnection != null || mainconnection.State != ConnectionState.Closed)
+            {
+                Disconnect.Visible = true;
+            }
         }
     }
 }
